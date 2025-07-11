@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:todo/core/routers/router.dart';
 import 'package:todo/core/theme/them_provider.dart';
 import 'package:todo/features/home/data/model/todo_mode.dart';
 import 'package:todo/features/home/data/repository/todo_repository.dart';
 import 'package:todo/features/home/presentation/bloc/todo_bloc.dart';
-import 'package:todo/features/home/presentation/pages/home_page.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -31,10 +31,9 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => TodoBloc(repository),
-      child: MaterialApp(
-        theme: Provider.of<ThemProvider>(context).themeData,
+      child: MaterialApp.router(
+        routerConfig: apppRoute,
         debugShowCheckedModeBanner: false,
-        home: Scaffold(body: HomePage()),
       ),
     );
   }
