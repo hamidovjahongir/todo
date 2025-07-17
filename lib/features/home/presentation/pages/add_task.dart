@@ -85,6 +85,7 @@ class _AddTaskState extends State<AddTask> {
                           (ctx) => Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
+                              
                               ListTile(
                                 title: Text("Zarur"),
                                 onTap: () => Navigator.pop(ctx, 1),
@@ -128,7 +129,13 @@ class _AddTaskState extends State<AddTask> {
                   },
                 ),
                 SizedBox(height: 50),
-                Mybutton(title: 'ADD', onTap: addData),
+                Mybutton(
+                  title: 'ADD',
+                  onTap: () {
+                    addData();
+                    context.go(AppRouters.home);
+                  },
+                ),
               ],
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:todo/core/routers/app_routers.dart';
+import 'package:todo/features/home/data/model/todo_mode.dart';
 import 'package:todo/features/home/presentation/pages/add_task.dart';
 import 'package:todo/features/home/presentation/pages/completed_screen.dart';
 import 'package:todo/features/home/presentation/pages/edit_task.dart';
@@ -18,7 +19,11 @@ final GoRouter apppRoute = GoRouter(
     GoRoute(
       path: AppRouters.edit,
       name: AppRouters.edit,
-      pageBuilder: (context, state) => NoTransitionPage(child: EditTask()),
+
+      pageBuilder: (context, state) {
+        final data = state.extra as TodoMode;
+        return NoTransitionPage(child: EditTask(todo: data));
+      },
     ),
     StatefulShellRoute.indexedStack(
       builder:

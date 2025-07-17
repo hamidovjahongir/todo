@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part 'todo_mode.g.dart'; 
+part 'todo_mode.g.dart';
 
 @HiveType(typeId: 0)
 class TodoMode extends HiveObject {
@@ -14,7 +14,7 @@ class TodoMode extends HiveObject {
   final int degree;
 
   @HiveField(3)
-  final bool? isDone;
+  bool? isDone;
 
   TodoMode({
     required this.id,
@@ -23,12 +23,7 @@ class TodoMode extends HiveObject {
     this.isDone = false,
   });
 
-  TodoMode copywith({
-    int? id,
-    String? name,
-    int? degree,
-    bool? isDone,
-  }) {
+  TodoMode copywith({int? id, String? name, int? degree, bool? isDone}) {
     return TodoMode(
       id: id ?? this.id,
       name: name ?? this.name,

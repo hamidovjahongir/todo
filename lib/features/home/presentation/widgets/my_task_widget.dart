@@ -2,14 +2,21 @@ import 'package:flutter/material.dart';
 
 class MyTaskWidget extends StatefulWidget {
   final String todoTitle;
+  final bool? showAction;
+  final void Function()? isDone;
   final String todoSubTitle;
   final void Function()? delete;
+  final void Function()? edit;
 
   MyTaskWidget({
     super.key,
     required this.todoTitle,
     required this.todoSubTitle,
+    this.isDone,
     this.delete,
+    this.edit,
+    this.showAction = true,
+
   });
 
   @override
@@ -56,26 +63,31 @@ class _MyTaskWidgetState extends State<MyTaskWidget> {
                 ),
               ],
             ),
-            Row(
+            
+            widget.showAction! ? Row(
               spacing: 10,
               children: [
+                
                 IconButton(
-                  onPressed: () {},
+                  onPressed: widget.edit ?? () {},
                   icon: Icon(Icons.edit, color: Color(0xffB3B7EE)),
                 ),
+                
                 IconButton(
                   onPressed: widget.delete ?? () {},
                   icon: Icon(Icons.delete, color: Color(0xffB3B7EE)),
                 ),
+                
                 IconButton(
-                  onPressed: () {},
+                  onPressed: widget.isDone ?? () {},
                   icon: Icon(
                     Icons.check_circle_outline_rounded,
                     color: Color(0xffB3B7EE),
                   ),
                 ),
               ],
-            ),
+            )
+         : SizedBox(),
           ],
         ),
       ),

@@ -4,8 +4,9 @@ class Mybutton extends StatefulWidget {
   final void Function()? onTap;
   final String title;
   final double? fontSize;
+  final double?width;
 
-  Mybutton({super.key, this.onTap, required this.title, this.fontSize});
+  const Mybutton({super.key, this.onTap, required this.title, this.fontSize, this.width});
 
   @override
   State<Mybutton> createState() => _MybuttonState();
@@ -15,10 +16,11 @@ class _MybuttonState extends State<Mybutton> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+
       borderRadius: BorderRadius.circular(20),
       onTap: widget.onTap ?? () {},
       child: Ink(
-        width: MediaQuery.of(context).size.width * 0.90,
+        width: widget.width ?? MediaQuery.of(context).size.width * 0.90,
         height: 60,
 
         decoration: BoxDecoration(

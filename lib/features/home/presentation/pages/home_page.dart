@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo/core/routers/app_routers.dart';
-import 'package:todo/features/home/data/model/todo_mode.dart';
 import 'package:todo/features/home/data/repository/todo_repository.dart';
 import 'package:todo/features/home/presentation/bloc/todo_bloc.dart';
 import 'package:todo/features/home/presentation/widgets/my_task_widget.dart';
@@ -73,9 +72,11 @@ class _HomePageState extends State<HomePage> {
               if (state is TodoLoading) {
                 return Center(child: CircularProgressIndicator());
               }
+
               if (state is TodoError) {
                 return Center(child: Text(state.error));
               }
+
               if (state is TodoSuccsess) {
                 if (state.todos.isEmpty) {
                   return Center(
@@ -89,6 +90,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   );
                 }
+
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
@@ -96,26 +98,40 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (context, index) {
                     final data = state.todos[index];
                     if (degreeValue == 4 || data.degree == degreeValue) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 20,
-                        ),
+                      if (data.isDone == false) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 10,
+                          ),
 
-                        child: MyTaskWidget(
-                          delete: () {
-                            todoRepository.removeToDo(data.id);
-                          },
+                          child: MyTaskWidget(
+                            isDone: () {
+                              context.read<TodoBloc>().add(
+                                IsDoneEvent(true, index),
+                              );
+                            },
 
-                          todoTitle: data.name,
-                          todoSubTitle:
-                              data.degree == 1
-                                  ? "Zarur"
-                                  : data.degree == 2
-                                  ? "Ortacha"
-                                  : "Zaril emas",
-                        ),
-                      );
+                            edit: () async {
+                              context.go(AppRouters.edit, extra: data);
+                            },
+
+                            delete: () {
+                              context.read<TodoBloc>().add(
+                                RemoveToDoEvent(data.id),
+                              );
+                            },
+
+                            todoTitle: data.name,
+                            todoSubTitle:
+                                data.degree == 1
+                                    ? "Zarur"
+                                    : data.degree == 2
+                                    ? "Ortacha"
+                                    : "Zaril emas",
+                          ),
+                        );
+                      }
                     }
                     return SizedBox();
                   },

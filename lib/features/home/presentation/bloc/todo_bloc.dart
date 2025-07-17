@@ -1,6 +1,6 @@
+import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:todo/features/home/data/model/todo_mode.dart';
 import 'package:todo/features/home/data/repository/todo_repository.dart';
 
@@ -14,6 +14,9 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<AddToDoEvent>(_addToDo);
     on<GetToDoEvent>(_getToDo);
     on<RemoveToDoEvent>(_removeToDo);
+    on<UpdateToDoEvent>(_updateTodo);
+    on<IsDoneEvent>(_isDone);
+    on<ClearAllEvent>(_clearAll);
   }
   Future<void> _addToDo(AddToDoEvent event, Emitter<TodoState> emit) async {
     try {
@@ -37,6 +40,20 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     }
   }
 
+  Future<void> _updateTodo(
+    UpdateToDoEvent event,
+    Emitter<TodoState> emit,
+  ) async {
+    try {
+      emit(TodoLoading());
+      await todoRepository.updateTodo(event.task);
+      final data = await todoRepository.getToDo();
+      emit(TodoSuccsess(data));
+    } catch (e) {
+      emit(TodoError(e.toString()));
+    }
+  }
+
   Future<void> _removeToDo(
     RemoveToDoEvent event,
     Emitter<TodoState> emit,
@@ -48,6 +65,28 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       emit(TodoSuccsess(data));
     } catch (e) {
       emit(TodoError(e.toString()));
+    }
+  }
+
+  Future<void> _isDone(IsDoneEvent event, Emitter<TodoState> emit) async {
+    emit(TodoLoading());
+    try {
+      await todoRepository.isDone(event.index, event.isDone);
+      final data = await todoRepository.getToDo();
+      emit(TodoSuccsess(data));
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future<void> _clearAll(ClearAllEvent event, Emitter<TodoState> emit) async {
+    emit(TodoLoading());
+
+    try {
+      await todoRepository.clearAll();
+      emit(TodoSuccsess([]));
+    } catch (e) {
+      log(e.toString());
     }
   }
 }

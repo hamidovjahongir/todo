@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo/features/home/presentation/bloc/todo_bloc.dart';
+import 'package:todo/features/home/presentation/widgets/my_task_widget.dart';
 
 class CompletedScreen extends StatefulWidget {
   const CompletedScreen({super.key});
@@ -8,6 +11,8 @@ class CompletedScreen extends StatefulWidget {
 }
 
 class _CompletedScreenState extends State<CompletedScreen> {
+  int degreeValue = 4;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,12 +27,70 @@ class _CompletedScreenState extends State<CompletedScreen> {
             fontSize: 24,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.delete_forever),
+            onPressed: () {
+              context.read<TodoBloc>().add(ClearAllEvent());
+            },
+          ),
+        ],
+
         backgroundColor: Color(0xff9395D3),
       ),
 
-      body: Column(children: [
-        
-        ],
+      body: BlocBuilder<TodoBloc, TodoState>(
+        builder: (context, state) {
+          if (state is TodoLoading) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          if (state is TodoError) {
+            return Center(child: Text(state.error));
+          }
+
+          if (state is TodoSuccsess) {
+            if (state.todos.isEmpty) {
+              return Center(
+                child: Column(
+                  children: [
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.4),
+                    Text("Ma'lumotlar yo'q."),
+                  ],
+                ),
+              );
+            }
+
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: state.todos.length,
+              itemBuilder: (context, index) {
+                final data = state.todos[index];
+                if (data.isDone == true) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
+
+                    child: MyTaskWidget(
+                      showAction: false,
+                      todoTitle: data.name,
+                      todoSubTitle:
+                          data.degree == 1
+                              ? "Zarur"
+                              : data.degree == 2
+                              ? "Ortacha"
+                              : "Zaril emas",
+                    ),
+                  );
+                }
+                return SizedBox();
+              },
+            );
+          }
+          return Container(width: 300, height: 300, color: Colors.amber);
+        },
       ),
     );
   }

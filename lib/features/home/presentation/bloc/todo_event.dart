@@ -19,3 +19,16 @@ class RemoveToDoEvent extends TodoEvent {
   final int id;
   RemoveToDoEvent(this.id);
 }
+
+
+class UpdateToDoEvent extends TodoEvent {
+  final TodoMode task;
+  UpdateToDoEvent(this.task);
+}
+
+class IsDoneEvent extends TodoEvent {
+  final bool isDone;
+  final int index;
+  IsDoneEvent(this.isDone, this.index);
+}
+class ClearAllEvent extends TodoEvent {} 
