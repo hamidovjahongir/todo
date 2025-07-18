@@ -1,7 +1,6 @@
 part of 'todo_bloc.dart';
 
-@immutable
-sealed class TodoEvent {}
+abstract class TodoEvent {}
 
 class AddToDoEvent extends TodoEvent {
   final TodoMode todo;
@@ -10,16 +9,10 @@ class AddToDoEvent extends TodoEvent {
 
 class GetToDoEvent extends TodoEvent {}
 
-class GetOneToDoEvent extends TodoEvent {
-  final int id;
-  GetOneToDoEvent(this.id);
-}
-
 class RemoveToDoEvent extends TodoEvent {
   final int id;
   RemoveToDoEvent(this.id);
 }
-
 
 class UpdateToDoEvent extends TodoEvent {
   final TodoMode task;
@@ -28,14 +21,10 @@ class UpdateToDoEvent extends TodoEvent {
 
 class IsDoneEvent extends TodoEvent {
   final bool isDone;
-  final int index;
-  IsDoneEvent(this.isDone, this.index);
+  final int id;
+  IsDoneEvent(this.isDone, this.id);
 }
-class ClearAllEvent extends TodoEvent {} 
+
+class ClearAllEvent extends TodoEvent {}
 
 class GetCompletedEvent extends TodoEvent {}
-
-class RemoveCompletedEvent extends TodoEvent {
-  final int id;
-  RemoveCompletedEvent(this.id);
-}

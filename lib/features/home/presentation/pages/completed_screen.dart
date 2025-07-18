@@ -16,7 +16,10 @@ class _CompletedScreenState extends State<CompletedScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<TodoBloc>().add(GetCompletedEvent());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<TodoBloc>().add(GetCompletedEvent());
+    });
   }
 
   @override
@@ -59,9 +62,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [                    
-                    Text("Ma'lumotlar yo'q."),
-                  ],
+                  children: [Text("Tugallangan vazifalar yo'q.")],
                 ),
               );
             }

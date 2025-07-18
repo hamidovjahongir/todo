@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                           child: MyTaskWidget(
                             isDone: () {
                               context.read<TodoBloc>().add(
-                                IsDoneEvent(true, index),
+                                IsDoneEvent(true, data.id),
                               );
                             },
 
@@ -128,7 +128,7 @@ class _HomePageState extends State<HomePage> {
                                     ? "Zarur"
                                     : data.degree == 2
                                     ? "Ortacha"
-                                    : "Zaril emas",
+                                    : "Zarur emas",
                           ),
                         );
                       }

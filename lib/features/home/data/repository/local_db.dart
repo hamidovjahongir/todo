@@ -24,36 +24,33 @@ class LocalDb {
   Future<void> updateTodo(TodoMode task) async {
     final box = Hive.box<TodoMode>('todos');
     final index = box.values.toList().indexWhere((e) => e.id == task.id);
-
+    
     if (index != -1) {
       await box.putAt(index, task);
     }
   }
 
-  Future<void> done(bool done, int index) async {
+  Future<void> done(bool done, int todoId) async {
     try {
       final box = Hive.box<TodoMode>('todos');
-      final todo = box.getAt(index);
-
-      if (todo != null) {
-        final completedBox = Hive.box<TodoMode>('completed');
-
-        if (done) {
-          todo.isDone = true;
-          await todo.save();
-
-          await completedBox.add(todo);
-
-          await box.deleteAt(index);
-        } else {
-          todo.isDone = false;
-          await todo.save();
-
-          final all = completedBox.values.toList();
-          final delIndex = all.indexWhere((e) => e.id == todo.id);
-          if (delIndex != -1) {
-            await completedBox.deleteAt(delIndex);
-          }
+      final completedBox = Hive.box<TodoMode>('completed');
+      
+      final todoIndex = box.values.toList().indexWhere((e) => e.id == todoId);
+      
+      if (todoIndex != -1) {
+        final todo = box.getAt(todoIndex);
+        
+        if (todo != null && done) {
+          final completedTodo = TodoMode(
+            id: todo.id,
+            name: todo.name,
+            degree: todo.degree,
+            isDone: true,
+          );
+          
+          await completedBox.add(completedTodo);
+          
+          await box.deleteAt(todoIndex);
         }
       }
     } catch (e) {
@@ -61,6 +58,7 @@ class LocalDb {
         errorMessage: e.toString(),
         includeScreenshot: true,
       );
+      throw Exception("Ma'lumot saqlashda xatolik: ${e.toString()}");
     }
   }
 

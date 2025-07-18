@@ -70,15 +70,16 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   }
 
   Future<void> _isDone(IsDoneEvent event, Emitter<TodoState> emit) async {
-    emit(TodoLoading());
     try {
-      await todoRepository.isDone(event.index, event.isDone);
-
+      emit(TodoLoading());
+      
+      await todoRepository.isDone(event.id, event.isDone);
+      
       final data = await todoRepository.getToDo();
       emit(TodoSuccsess(data));
     } catch (e) {
       log(e.toString());
-      emit(TodoError("Xatolik yuz berdi"));
+      emit(TodoError("Xatolik yuz berdi: ${e.toString()}"));
     }
   }
 

@@ -21,8 +21,8 @@ class TodoRepository {
     await localDb.updateTodo(todo);
   }
 
-  Future<void> isDone(int index, bool done) async {
-    await localDb.done(done, index);
+  Future<void> isDone(int todoId, bool done) async {
+    await localDb.done(done, todoId);
   }
 
   Future<void> clearAll() async {
