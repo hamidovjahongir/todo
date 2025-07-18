@@ -14,6 +14,12 @@ class _CompletedScreenState extends State<CompletedScreen> {
   int degreeValue = 4;
 
   @override
+  void initState() {
+    super.initState();
+    context.read<TodoBloc>().add(GetCompletedEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffD6D7EF),
@@ -29,13 +35,12 @@ class _CompletedScreenState extends State<CompletedScreen> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.delete_forever),
+            icon: Icon(Icons.delete_forever, color: Colors.white),
             onPressed: () {
               context.read<TodoBloc>().add(ClearAllEvent());
             },
           ),
         ],
-
         backgroundColor: Color(0xff9395D3),
       ),
 
@@ -53,8 +58,8 @@ class _CompletedScreenState extends State<CompletedScreen> {
             if (state.todos.isEmpty) {
               return Center(
                 child: Column(
-                  children: [
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.4),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [                    
                     Text("Ma'lumotlar yo'q."),
                   ],
                 ),
@@ -62,30 +67,23 @@ class _CompletedScreenState extends State<CompletedScreen> {
             }
 
             return ListView.builder(
-              shrinkWrap: true,
+              padding: EdgeInsets.all(10),
               itemCount: state.todos.length,
               itemBuilder: (context, index) {
                 final data = state.todos[index];
-                if (data.isDone == true) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 10,
-                    ),
-
-                    child: MyTaskWidget(
-                      showAction: false,
-                      todoTitle: data.name,
-                      todoSubTitle:
-                          data.degree == 1
-                              ? "Zarur"
-                              : data.degree == 2
-                              ? "Ortacha"
-                              : "Zaril emas",
-                    ),
-                  );
-                }
-                return SizedBox();
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: MyTaskWidget(
+                    showAction: false,
+                    todoTitle: data.name,
+                    todoSubTitle:
+                        data.degree == 1
+                            ? "Zarur"
+                            : data.degree == 2
+                            ? "Ortacha"
+                            : "Zarur emas",
+                  ),
+                );
               },
             );
           }

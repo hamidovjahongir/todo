@@ -20,7 +20,8 @@ void main() async {
   );
   Hive.registerAdapter(TodoModeAdapter());
 
-  await Hive.openBox<TodoMode>('todos');
+  await Hive.openBox<TodoMode>('todos');;
+  await Hive.openBox<TodoMode>('completed');
   runApp(
     ChangeNotifierProvider(
       create: (ctx) => ThemProvider(),

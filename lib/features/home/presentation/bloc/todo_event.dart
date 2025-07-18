@@ -32,3 +32,10 @@ class IsDoneEvent extends TodoEvent {
   IsDoneEvent(this.isDone, this.index);
 }
 class ClearAllEvent extends TodoEvent {} 
+
+class GetCompletedEvent extends TodoEvent {}
+
+class RemoveCompletedEvent extends TodoEvent {
+  final int id;
+  RemoveCompletedEvent(this.id);
+}

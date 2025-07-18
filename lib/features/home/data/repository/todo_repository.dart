@@ -26,6 +26,14 @@ class TodoRepository {
   }
 
   Future<void> clearAll() async {
-    await localDb.clearAll();   
+    await localDb.clearAll();
+  }
+
+  Future<List<TodoMode>> getCompleted() async {
+    return await localDb.getCompletedTodos();
+  }
+
+  Future<void> addToCompleted(TodoMode todo) async {
+    await localDb.addToCompleted(todo);
   }
 }

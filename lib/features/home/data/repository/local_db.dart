@@ -16,7 +16,9 @@ class LocalDb {
   Future<void> removeTodo(int id) async {
     final box = Hive.box<TodoMode>('todos');
     final index = box.values.toList().indexWhere((e) => e.id == id);
-    await box.deleteAt(index);
+    if (index != -1) {
+      await box.deleteAt(index);
+    }
   }
 
   Future<void> updateTodo(TodoMode task) async {
@@ -32,22 +34,48 @@ class LocalDb {
     try {
       final box = Hive.box<TodoMode>('todos');
       final todo = box.getAt(index);
+
       if (todo != null) {
-        todo.isDone = done;
-        await todo.save();
+        final completedBox = Hive.box<TodoMode>('completed');
+
+        if (done) {
+          todo.isDone = true;
+          await todo.save();
+
+          await completedBox.add(todo);
+
+          await box.deleteAt(index);
+        } else {
+          todo.isDone = false;
+          await todo.save();
+
+          final all = completedBox.values.toList();
+          final delIndex = all.indexWhere((e) => e.id == todo.id);
+          if (delIndex != -1) {
+            await completedBox.deleteAt(delIndex);
+          }
+        }
       }
     } catch (e) {
       TelegramLogger.sendError(
-        // ignore: use_build_context_synchronously
         errorMessage: e.toString(),
-
         includeScreenshot: true,
       );
     }
   }
 
   Future<void> clearAll() async {
-    final box = Hive.box<TodoMode>('todos');
+    final box = Hive.box<TodoMode>('completed');
     await box.clear();
+  }
+
+  Future<List<TodoMode>> getCompletedTodos() async {
+    final box = Hive.box<TodoMode>('completed');
+    return box.values.toList();
+  }
+
+  Future<void> addToCompleted(TodoMode todo) async {
+    final box = Hive.box<TodoMode>('completed');
+    await box.add(todo);
   }
 }

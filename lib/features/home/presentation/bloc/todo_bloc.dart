@@ -17,7 +17,9 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<UpdateToDoEvent>(_updateTodo);
     on<IsDoneEvent>(_isDone);
     on<ClearAllEvent>(_clearAll);
+    on<GetCompletedEvent>(_getCompleted);
   }
+
   Future<void> _addToDo(AddToDoEvent event, Emitter<TodoState> emit) async {
     try {
       emit(TodoLoading());
@@ -32,7 +34,6 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   Future<void> _getToDo(GetToDoEvent event, Emitter<TodoState> emit) async {
     try {
       emit(TodoLoading());
-
       final data = await todoRepository.getToDo();
       emit(TodoSuccsess(data));
     } catch (e) {
@@ -72,21 +73,36 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     emit(TodoLoading());
     try {
       await todoRepository.isDone(event.index, event.isDone);
+
       final data = await todoRepository.getToDo();
       emit(TodoSuccsess(data));
     } catch (e) {
       log(e.toString());
+      emit(TodoError("Xatolik yuz berdi"));
     }
   }
 
   Future<void> _clearAll(ClearAllEvent event, Emitter<TodoState> emit) async {
     emit(TodoLoading());
-
     try {
       await todoRepository.clearAll();
       emit(TodoSuccsess([]));
     } catch (e) {
       log(e.toString());
+      emit(TodoError("Xatolik yuz berdi"));
+    }
+  }
+
+  Future<void> _getCompleted(
+    GetCompletedEvent event,
+    Emitter<TodoState> emit,
+  ) async {
+    emit(TodoLoading());
+    try {
+      final data = await todoRepository.getCompleted();
+      emit(TodoSuccsess(data));
+    } catch (e) {
+      emit(TodoError(e.toString()));
     }
   }
 }
