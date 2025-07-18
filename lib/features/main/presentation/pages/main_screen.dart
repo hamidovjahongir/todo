@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:todo/features/home/presentation/bloc/todo_bloc.dart';
 
 class MainScreen extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -12,6 +14,12 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   void _onTap(int index) {
+    if (index == 0) {
+      context.read<TodoBloc>().add(GetToDoEvent());
+    } else if (index == 1) {
+      context.read<TodoBloc>().add(GetCompletedEvent());
+    }
+
     widget.navigationShell.goBranch(
       index,
       initialLocation: index == widget.navigationShell.currentIndex,

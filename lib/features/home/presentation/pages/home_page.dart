@@ -23,6 +23,9 @@ class _HomePageState extends State<HomePage> {
   bool buttonDelete = false;
   bool delete = false;
   List<int> selectedIds = [];
+  
+  // Eski ma'lumotlarni saqlab turish uchun
+  List<dynamic> lastTodos = [];
 
   @override
   void initState() {
@@ -69,7 +72,15 @@ class _HomePageState extends State<HomePage> {
           key: _globalKey,
           child: BlocBuilder<TodoBloc, TodoState>(
             builder: (context, state) {
-              if (state is TodoLoading) {
+              if (state is TodoSuccsess) {
+                lastTodos = state.todos;
+              }
+              
+              final todosToShow = (state is TodoLoading && lastTodos.isNotEmpty) 
+                  ? lastTodos 
+                  : (state is TodoSuccsess ? state.todos : []);
+
+              if (state is TodoLoading && lastTodos.isEmpty) {
                 return Center(child: CircularProgressIndicator());
               }
 
@@ -77,67 +88,80 @@ class _HomePageState extends State<HomePage> {
                 return Center(child: Text(state.error));
               }
 
-              if (state is TodoSuccsess) {
-                if (state.todos.isEmpty) {
-                  return Center(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.4,
-                        ),
-                        Text("Ma'lumotlar yo'q."),
-                      ],
-                    ),
-                  );
-                }
-
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: state.todos.length,
-                  itemBuilder: (context, index) {
-                    final data = state.todos[index];
-                    if (degreeValue == 4 || data.degree == degreeValue) {
-                      if (data.isDone == false) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 10,
-                          ),
-
-                          child: MyTaskWidget(
-                            isDone: () {
-                              context.read<TodoBloc>().add(
-                                IsDoneEvent(true, data.id),
-                              );
-                            },
-
-                            edit: () async {
-                              context.go(AppRouters.edit, extra: data);
-                            },
-
-                            delete: () {
-                              context.read<TodoBloc>().add(
-                                RemoveToDoEvent(data.id),
-                              );
-                            },
-
-                            todoTitle: data.name,
-                            todoSubTitle:
-                                data.degree == 1
-                                    ? "Zarur"
-                                    : data.degree == 2
-                                    ? "Ortacha"
-                                    : "Zarur emas",
-                          ),
-                        );
-                      }
-                    }
-                    return SizedBox();
-                  },
+              if (todosToShow.isEmpty) {
+                return Center(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.4,
+                      ),
+                      Text("Ma'lumotlar yo'q."),
+                    ],
+                  ),
                 );
               }
-              return Container(width: 300, height: 300, color: Colors.amber);
+
+              return Stack(
+                children: [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: todosToShow.length,
+                    itemBuilder: (context, index) {
+                      final data = todosToShow[index];
+                      if (degreeValue == 4 || data.degree == degreeValue) {
+                        if (data.isDone == false) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 10,
+                            ),
+                            child: MyTaskWidget(
+                              isDone: () {
+                                context.read<TodoBloc>().add(
+                                  IsDoneEvent(true, data.id),
+                                );
+                              },
+                              edit: () async {
+                                context.go(AppRouters.edit, extra: data);
+                              },
+                              delete: () {
+                                context.read<TodoBloc>().add(
+                                  RemoveToDoEvent(data.id),
+                                );
+                              },
+                              todoTitle: data.name,
+                              todoSubTitle:
+                                  data.degree == 1
+                                      ? "Zarur"
+                                      : data.degree == 2
+                                      ? "Ortacha"
+                                      : "Zarur emas",
+                            ),
+                          );
+                        }
+                      }
+                      return SizedBox();
+                    },
+                  ),
+                  
+                  if (state is TodoLoading && lastTodos.isNotEmpty)
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height: 3,
+                        child: LinearProgressIndicator(
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Color(0xff9395D3),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              );
             },
           ),
         ),
