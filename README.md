@@ -27,6 +27,10 @@ A simple and beautiful to-do app built with Flutter. Organize your tasks and boo
 
 ---
 
-## 🔧 Getting Started
+## 🛠️ Tech Stack
+- Bloc
+- Hive
+- GoRouter
+    
 
 
