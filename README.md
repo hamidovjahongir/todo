@@ -11,8 +11,8 @@ A simple and beautiful to-do app built with Flutter. Organize your tasks and boo
 - ✅ Add new tasks
 - ✅ Mark tasks as done
 - 🗑️ Delete tasks
-- 🌙 Light/Dark mode
-- 📅 Task date/time (optional)
+- 📝 Edit tasks
+
 
 ---
 
@@ -29,10 +29,4 @@ A simple and beautiful to-do app built with Flutter. Organize your tasks and boo
 
 ## 🔧 Getting Started
 
-Clone the repo and run the app:
 
-```bash
-git clone https://github.com/your_username/flutter_todo_app.git
-cd flutter_todo_app
-flutter pub get
-flutter run
