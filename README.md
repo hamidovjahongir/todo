@@ -19,16 +19,16 @@ A simple and beautiful to-do app built with Flutter. Organize your tasks and boo
 ## 📸 Screenshots
 
 ### ➕ Add Task screen (modal ochilgan holat)
-![screenshot1](screenshots/screenshot1.jpg)
+<img src="screenshots/screenshot1.jpg" alt="screenshot1" width="300"/>
 
 ### ➕ Add Task screen (oddiy holat)
-![screenshot2](screenshots/screenshot2.jpg)
+<img src="screenshots/screenshot2.jpg" alt="screenshot2" width="300"/>
 
 ### ✅ Task completed (bajarilgan)
-![screenshot3](screenshots/screenshot3.jpg)
+<img src="screenshots/screenshot3.jpg" alt="screenshot3" width="300"/>
 
 ### 📝 Edit task screen
-![screenshot4](screenshots/screenshot4.jpg)
+<img src="screenshots/screenshot4.jpg" alt="screenshot4" width="300"/>
 
 ---
 
