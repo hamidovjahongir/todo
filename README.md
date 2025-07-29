@@ -1,12 +1,36 @@
-🎮 Big G Mini Games
-A collection of fast, fun, and retro-style mini games built with Flutter. This app is designed to test your reflexes and challenge your brain in short, engaging sessions. Whether you're tapping quickly or solving light puzzles — it's all here!
+# flutter_todo_app
 
-🧠 Included Games
-1. Clicking Toys (Niners Game)
-Turn all squares orange by tapping the right combination — but you only have a limited number of moves. A retro grid puzzle challenge!
+📝 **Flutter To Do App**
 
-2. Reaction Time Game
-Test your reflexes! Tap as fast as possible when the screen changes — great for speed training or just quick fun.
+A simple and beautiful to-do app built with Flutter. Organize your tasks and boost productivity with a minimal and efficient interface.
 
-3. Balls Tap Game
-Another reaction-based game where you tap balls as quickly as you can. Improve your response time and challenge your friends.
+---
+
+## 🚀 Features
+
+- ✅ Add new tasks
+- ✅ Mark tasks as done
+- 🗑️ Delete tasks
+- 🌙 Light/Dark mode
+- 📅 Task date/time (optional)
+
+---
+
+## 📸 Screenshots
+
+> *Add screenshots of your app here if available:*
+>
+> ![Home Screen](screenshots/home_screen.png)
+> ![Add Task Screen](screenshots/add_task.png)
+
+---
+
+## 🔧 Getting Started
+
+Clone the repo and run the app:
+
+```bash
+git clone https://github.com/your_username/flutter_todo_app.git
+cd flutter_todo_app
+flutter pub get
+flutter run
