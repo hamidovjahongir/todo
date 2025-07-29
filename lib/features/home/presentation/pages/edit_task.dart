@@ -135,13 +135,13 @@ class _EditTaskState extends State<EditTask> {
                   children: [
                     Mybutton(
                       title: 'Update',
-                      width: 180,
+                      width: MediaQuery.of(context).size.width * 0.45 - 15,
                       fontSize: 16,
                       onTap: updateTodo,
                     ),
                     Mybutton(
                       title: 'Cancel',
-                      width: 180,
+                      width: MediaQuery.of(context).size.width * 0.45 - 15,
                       fontSize: 16,
                       onTap: () => context.go(AppRouters.home),
                     ),
