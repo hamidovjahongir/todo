@@ -4,16 +4,15 @@
 
 A simple and beautiful to-do app built with Flutter. Organize your tasks and boost productivity with a minimal and efficient interface.
 
-📎 Telegramda ko'rish: [Screenshot Link](https://t.me/coderkhamidov/114)
-
 ---
 
 ## 🚀 Features
 
-- ✅ Add new tasks  
-- ✅ Mark tasks as done  
-- 🗑️ Delete tasks  
-- 📝 Edit tasks  
+- ✅ Add new tasks
+- ✅ Mark tasks as done
+- 🗑️ Delete tasks
+- 📝 Edit tasks
+
 
 ---
 
@@ -34,7 +33,18 @@ A simple and beautiful to-do app built with Flutter. Organize your tasks and boo
 ---
 
 ## 🛠️ Tech Stack
+- Bloc
+- Hive
+- GoRouter
 
-- Bloc  
-- Hive  
-- GoRouter  
+---
+
+## 📥 Download APK
+
+📦 [Click here to download the APK](https://t.me/coderkhamidov/114)
+
+---
+
+## 👨‍💻 Developer
+
+Developed with by [coderkhamidov](https://t.me/coderkhamidov)
